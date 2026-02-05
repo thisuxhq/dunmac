@@ -119,6 +119,11 @@ For the **UnitedBy.AI** demo:
 - **Mac Automation**: AppleScript + Shell
 - **Tunnel**: Cloudflare Tunnel
 
+## Talk
+
+View the presentation slides from the UnitedBy.AI gathering:
+[talks.sanju.sh/ai-gathering-unitedbyai-jan2026](https://talks.sanju.sh/ai-gathering-unitedbyai-jan2026/)
+
 ## Security
 
 - Command allowlisting (only safe commands)
