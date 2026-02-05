@@ -1,2 +1,9 @@
+# Dependencies
+node_modules
+
+# Environment variables
+.env
+.env.*
+
 # Project documentation (private)
 IDEA.md
