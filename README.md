@@ -18,7 +18,11 @@ And your Mac does it. From your phone. From anywhere.
 ## How it works
 
 ```
-Your phone → Cloudflare tunnel → Hono server on your Mac → AI figures out what you want → AppleScript makes it happen
+┌────────────────┐      HTTPS       ┌───────────────────────────────────┐
+│   Phone/Web    │  ──────────────→ │   Hono Server (runs on Mac)       │
+│   (anywhere)   │      tunnel      │   - AI (Claude via OpenRouter)    │
+│                │  ←────────────── │   - Tool execution (osascript)    │
+└────────────────┘                  └───────────────────────────────────┘
 ```
 
 The AI (Claude via OpenRouter) takes your natural language and picks the right tools to run. Music control, screenshots, opening apps, system settings - all through AppleScript and shell commands.
