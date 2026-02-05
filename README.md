@@ -1,135 +1,69 @@
-# DunMac 🖥️
+# DunMac
 
-> Remote Mac automation powered by AI. Control your Mac from anywhere using natural language.
+Control your Mac from your phone using AI. That's it.
 
-Built by **THISUX** for the **UnitedBy.AI** community demo.
+I built this for a demo at the UnitedBy.AI gathering in Chennai. Wanted to show how you can talk to your Mac like a human and have it actually do stuff.
 
-## Features
+## What it does
 
-- 🗣️ **Natural Language** - Talk to your Mac like a human
-- 📱 **Mobile Control** - Control from your phone via web app
-- 🎵 **Music Control** - Play/pause/skip on Apple Music or Spotify
-- 📸 **Screenshots** - Take and view screenshots remotely
-- 🔊 **Text-to-Speech** - Make your Mac speak
-- 🌙 **System Control** - Dark mode, volume, notifications
-- 💻 **Shell Commands** - Run safe terminal commands
-- 🔐 **Secure** - Only allowed commands, no destructive operations
+You type (or say) things like:
+- "Open Safari and go to google.com"
+- "Play some jazz on Spotify"
+- "Take a screenshot"
+- "Set volume to 50%"
+- "Toggle dark mode"
 
-## Quick Start
+And your Mac does it. From your phone. From anywhere.
 
-### 1. Install dependencies
+## How it works
+
+```
+Your phone → Cloudflare tunnel → Hono server on your Mac → AI figures out what you want → AppleScript makes it happen
+```
+
+The AI (Claude via OpenRouter) takes your natural language and picks the right tools to run. Music control, screenshots, opening apps, system settings - all through AppleScript and shell commands.
+
+## Setup
 
 ```bash
-cd dunmac
 bun install
-```
-
-### 2. Configure OpenRouter
-
-```bash
-cd apps/server
 cp .env.example .env
-# Edit .env and add your OPENROUTER_API_KEY
+# add your OPENROUTER_API_KEY from openrouter.ai/keys
 ```
 
-Get your API key at [openrouter.ai/keys](https://openrouter.ai/keys)
-
-### 3. Start the server
-
+Run the server:
 ```bash
-cd apps/server
-bun run dev
+cd apps/server && bun run dev
 ```
 
-### 4. Create a tunnel (in another terminal)
-
+Create a tunnel so your phone can reach it:
 ```bash
 cloudflared tunnel --url http://localhost:3456
 ```
 
-Copy the generated URL (e.g., `https://xxx-xxx.trycloudflare.com`)
-
-### 5. Start the web app
-
+Start the web app:
 ```bash
-cd apps/web
-bun run dev
+cd apps/web && bun run dev
 ```
 
-Open `http://localhost:5173` on your phone, paste the tunnel URL, and connect!
+Open localhost:5173 on your phone, paste the tunnel URL, connect. Done.
 
-## Architecture
+## Tech
 
-```
-┌────────────────┐      HTTPS       ┌───────────────────────────────────┐
-│   Phone/Web    │  ──────────────→ │   Hono Server (runs on Mac)       │
-│   (anywhere)   │      tunnel      │   - AI (Claude via OpenRouter)    │
-│                │  ←────────────── │   - Tool execution (osascript)    │
-└────────────────┘                  └───────────────────────────────────┘
-```
-
-## Available Tools
-
-| Tool | Description |
-|------|-------------|
-| `open_app` | Open any macOS application |
-| `open_url` | Open URL in browser |
-| `say` | Text-to-speech |
-| `notify` | Show macOS notification |
-| `screenshot` | Capture screen |
-| `shell` | Run safe shell commands |
-| `music_play` | Play music (Apple Music/Spotify) |
-| `music_pause` | Pause playback |
-| `music_next` | Next track |
-| `music_previous` | Previous track |
-| `volume_set` | Set volume (0-100) |
-| `volume_mute` | Mute/unmute |
-| `dark_mode` | Toggle dark mode |
-| `lock_screen` | Lock screen |
-| `battery_status` | Get battery info |
-| `running_apps` | List running apps |
-| `front_app` | Get focused app |
-
-## Example Commands
-
-- "Open Safari and go to google.com"
-- "Play some jazz music on Spotify"
-- "Say hello world"
-- "Take a screenshot"
-- "What apps are running?"
-- "Set volume to 50%"
-- "Toggle dark mode"
-- "Open VS Code, Terminal, and Figma"
-
-## Demo Tips
-
-For the **UnitedBy.AI** demo:
-
-1. **Start with something fun**: "Say Hello United by AI Chennai!"
-2. **Show the screenshot feature**: Take a screenshot and show it on your phone
-3. **Music control**: "Play some lo-fi beats" while presenting
-4. **Multi-action**: "Open my coding workspace" → multiple apps at once
-5. **System control**: Toggle dark mode live on stage
-
-## Tech Stack
-
-- **Server**: Bun + Hono
-- **AI**: Claude Sonnet via OpenRouter
-- **Web**: SvelteKit 5
-- **Mac Automation**: AppleScript + Shell
-- **Tunnel**: Cloudflare Tunnel
-
-## Talk
-
-View the presentation slides from the UnitedBy.AI gathering:
-[talks.sanju.sh/ai-gathering-unitedbyai-jan2026](https://talks.sanju.sh/ai-gathering-unitedbyai-jan2026/)
+- Bun + Hono for the server
+- Claude Sonnet via OpenRouter for the AI
+- SvelteKit for the web app
+- AppleScript for Mac automation
+- Cloudflare Tunnel for remote access
 
 ## Security
 
-- Command allowlisting (only safe commands)
-- Dangerous pattern blocking (no `rm -rf`, `sudo`, etc.)
-- No authentication in MVP (add for production!)
+Only allowlisted commands run. Dangerous stuff like `rm -rf` or `sudo` is blocked. No auth in this version though - add that if you're using this for real.
 
-## License
+## Talk
 
-MIT - Built with ❤️ by THISUX
+I presented this at UnitedBy.AI. Slides here: [talks.sanju.sh/ai-gathering-unitedbyai-jan2026](https://talks.sanju.sh/ai-gathering-unitedbyai-jan2026/)
+
+---
+
+Built by [THISUX](https://thisux.com)
