@@ -1,0 +1,14 @@
+{
+  "name": "dunmac",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:web\"",
+    "dev:server": "cd apps/server && bun run dev",
+    "dev:web": "cd apps/web && bun run dev",
+    "tunnel": "cloudflared tunnel --url http://localhost:3456"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
