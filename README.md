@@ -27,6 +27,28 @@ And your Mac does it. From your phone. From anywhere.
 
 The AI (Claude via OpenRouter) takes your natural language and picks the right tools to run. Music control, screenshots, opening apps, system settings - all through AppleScript and shell commands.
 
+## Tools
+
+| Tool | What it does |
+|------|--------------|
+| `open_app` | Open any macOS app |
+| `open_url` | Open URL in browser |
+| `say` | Text-to-speech |
+| `notify` | Show macOS notification |
+| `screenshot` | Capture screen |
+| `shell` | Run safe shell commands |
+| `music_play` | Play music (Apple Music/Spotify) |
+| `music_pause` | Pause playback |
+| `music_next` | Next track |
+| `music_previous` | Previous track |
+| `volume_set` | Set volume (0-100) |
+| `volume_mute` | Mute/unmute |
+| `dark_mode` | Toggle dark mode |
+| `lock_screen` | Lock screen |
+| `battery_status` | Get battery info |
+| `running_apps` | List running apps |
+| `front_app` | Get focused app |
+
 ## Setup
 
 ```bash
