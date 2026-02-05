@@ -2,7 +2,7 @@
 
 Control your Mac from your phone using AI. That's it.
 
-I built this for a demo at the UnitedBy.AI gathering in Chennai. Wanted to show how you can talk to your Mac like a human and have it actually do stuff.
+I built this for a demo at the [UnitedBy.AI](https://unitedby.ai) gathering in Chennai. Wanted to show how you can talk to your Mac like a human and have it actually do stuff.
 
 ## What it does
 
@@ -88,7 +88,7 @@ Only allowlisted commands run. Dangerous stuff like `rm -rf` or `sudo` is blocke
 
 ## Talk
 
-I presented this at UnitedBy.AI. Slides here: [talks.sanju.sh/ai-gathering-unitedbyai-jan2026](https://talks.sanju.sh/ai-gathering-unitedbyai-jan2026/)
+I presented this at [UnitedBy.AI](https://unitedby.ai). Slides here: [talks.sanju.sh/ai-gathering-unitedbyai-jan2026](https://talks.sanju.sh/ai-gathering-unitedbyai-jan2026/)
 
 ---
 
