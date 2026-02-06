@@ -44,6 +44,25 @@ app.post("/chat", async (c) => {
       return c.json({ error: "Message is required" }, 400);
     }
 
+    if (message.length > 10_000) {
+      return c.json({ error: "Message too long" }, 400);
+    }
+
+    if (!Array.isArray(history) || history.length > 50) {
+      return c.json({ error: "Invalid history" }, 400);
+    }
+
+    for (const entry of history) {
+      if (
+        !entry ||
+        typeof entry !== "object" ||
+        typeof entry.role !== "string" ||
+        typeof entry.content !== "string"
+      ) {
+        return c.json({ error: "Invalid history entry" }, 400);
+      }
+    }
+
     console.log(`[Chat] User: ${message}`);
     const response = await chat(message, history);
     console.log(`[Chat] Assistant: ${response.message}`);
@@ -57,13 +76,18 @@ app.post("/chat", async (c) => {
 
 // Direct tool execution (bypass AI)
 app.post("/tools/:name", async (c) => {
-  const name = c.req.param("name");
-  const args = await c.req.json();
+  try {
+    const name = c.req.param("name");
+    const args = await c.req.json();
 
-  console.log(`[Direct] Tool: ${name}`, args);
-  const result = await executeTool(name, args);
-  
-  return c.json(result);
+    console.log(`[Direct] Tool: ${name}`, args);
+    const result = await executeTool(name, args);
+
+    return c.json(result);
+  } catch (error) {
+    console.error("[Direct] Error:", error);
+    return c.json({ error: "Tool execution failed" }, 500);
+  }
 });
 
 // Screenshot endpoint (returns image directly)

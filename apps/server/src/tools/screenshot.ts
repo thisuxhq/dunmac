@@ -42,8 +42,8 @@ export const screenshot: ToolDefinition = {
       } else {
         return { success: false, message: `Failed to capture screenshot` };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to capture screenshot" };
     }
   },
 };

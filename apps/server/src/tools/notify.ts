@@ -11,21 +11,23 @@ export const notify: ToolDefinition = {
   }),
   execute: async ({ title, message, sound = true }) => {
     try {
-      let script = `display notification "${message}" with title "${title}"`;
+      const safeTitle = title.replace(/["\\]/g, "");
+      const safeMessage = message.replace(/["\\]/g, "");
+      let script = `display notification "${safeMessage}" with title "${safeTitle}"`;
       if (sound) {
         script += ` sound name "default"`;
       }
-      
+
       const proc = Bun.spawn(["osascript", "-e", script]);
       await proc.exited;
-      
+
       if (proc.exitCode === 0) {
-        return { success: true, message: `Notification sent: ${title}` };
+        return { success: true, message: `Notification sent: ${safeTitle}` };
       } else {
-        return { success: false, message: `Failed to send notification` };
+        return { success: false, message: "Failed to send notification" };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to send notification" };
     }
   },
 };

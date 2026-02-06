@@ -27,36 +27,56 @@ export async function sendMessage(
   message: string,
   history: { role: "user" | "assistant"; content: string }[] = []
 ): Promise<ChatResponse> {
-  const response = await fetch(`${serverUrl}/chat`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message, history }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30_000);
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(`${serverUrl}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message, history }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  } finally {
+    clearTimeout(timeout);
   }
-
-  return response.json();
 }
 
 export async function getTools(serverUrl: string): Promise<{ name: string; description: string }[]> {
-  const response = await fetch(`${serverUrl}/tools`);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30_000);
+
+  try {
+    const response = await fetch(`${serverUrl}/tools`, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.tools;
+  } finally {
+    clearTimeout(timeout);
   }
-  const data = await response.json();
-  return data.tools;
 }
 
 export async function healthCheck(serverUrl: string): Promise<boolean> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30_000);
+
   try {
-    const response = await fetch(serverUrl, { method: "GET" });
+    const response = await fetch(serverUrl, { method: "GET", signal: controller.signal });
     return response.ok;
   } catch {
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 

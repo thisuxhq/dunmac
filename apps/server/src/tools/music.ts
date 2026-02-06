@@ -27,19 +27,18 @@ export const musicPlay: ToolDefinition = {
   execute: async ({ query, app = "music" }) => {
     try {
       const appName = app === "spotify" ? "Spotify" : "Music";
-      
+
       if (query) {
-        // Search and play
+        const safeQuery = query.replace(/["\\]/g, "");
+
         if (app === "spotify") {
-          // For Spotify, we'll use the search URL
-          const searchUrl = `spotify:search:${encodeURIComponent(query)}`;
+          const searchUrl = `spotify:search:${encodeURIComponent(safeQuery)}`;
           await runAppleScript(`tell application "Spotify" to play track "${searchUrl}"`);
         } else {
-          // For Apple Music
           const script = `
             tell application "Music"
               activate
-              set results to (search playlist "Library" for "${query}")
+              set results to (search playlist "Library" for "${safeQuery}")
               if length of results > 0 then
                 play item 1 of results
               else
@@ -49,14 +48,13 @@ export const musicPlay: ToolDefinition = {
           `;
           await runAppleScript(script);
         }
-        return { success: true, message: `Playing "${query}" on ${appName}` };
+        return { success: true, message: `Playing "${safeQuery}" on ${appName}` };
       } else {
-        // Just play/resume
         await runAppleScript(`tell application "${appName}" to play`);
         return { success: true, message: `Resumed playback on ${appName}` };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to play music" };
     }
   },
 };

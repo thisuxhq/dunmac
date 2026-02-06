@@ -9,18 +9,23 @@ export const openUrl: ToolDefinition = {
   }),
   execute: async ({ url }) => {
     try {
-      // Ensure URL has protocol
-      const fullUrl = url.startsWith("http") ? url : `https://${url}`;
+      const fullUrl = url.startsWith("http://") || url.startsWith("https://") ? url : `https://${url}`;
+
+      // Block dangerous schemes
+      if (/^(javascript|file|data):/i.test(fullUrl)) {
+        return { success: false, message: "Only http:// and https:// URLs are allowed" };
+      }
+
       const proc = Bun.spawn(["open", fullUrl]);
       await proc.exited;
-      
+
       if (proc.exitCode === 0) {
         return { success: true, message: `Opened ${fullUrl}` };
       } else {
-        return { success: false, message: `Failed to open URL` };
+        return { success: false, message: "Failed to open URL" };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to open URL" };
     }
   },
 };

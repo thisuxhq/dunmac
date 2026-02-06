@@ -45,8 +45,8 @@ export const darkMode: ToolDefinition = {
         `);
         return { success: true, message: enable ? "Dark mode enabled" : "Light mode enabled" };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to change dark mode" };
     }
   },
 };
@@ -60,8 +60,8 @@ export const lockScreen: ToolDefinition = {
       const proc = Bun.spawn(["pmset", "displaysleepnow"]);
       await proc.exited;
       return { success: true, message: "Screen locked" };
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to lock screen" };
     }
   },
 };
@@ -75,8 +75,8 @@ export const sleepDisplay: ToolDefinition = {
       const proc = Bun.spawn(["pmset", "displaysleepnow"]);
       await proc.exited;
       return { success: true, message: "Display sleeping" };
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to sleep display" };
     }
   },
 };
@@ -105,8 +105,8 @@ export const batteryStatus: ToolDefinition = {
           status: chargingMatch?.[1]?.toLowerCase() || "unknown",
         }
       };
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to get battery status" };
     }
   },
 };
@@ -132,8 +132,8 @@ export const getRunningApps: ToolDefinition = {
         };
       }
       return { success: false, message: "Failed to get running apps" };
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to get running apps" };
     }
   },
 };
@@ -158,8 +158,8 @@ export const getFrontApp: ToolDefinition = {
         };
       }
       return { success: false, message: "Failed to get front app" };
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to get front app" };
     }
   },
 };
@@ -182,11 +182,10 @@ export const doNotDisturb: ToolDefinition = {
         success: true, 
         message: enable ? "Do Not Disturb enabled" : "Do Not Disturb disabled" 
       };
-    } catch (error) {
-      // Fallback message
-      return { 
-        success: false, 
-        message: `DND toggle requires Shortcuts app setup. Error: ${error}` 
+    } catch {
+      return {
+        success: false,
+        message: "DND toggle requires Shortcuts app setup"
       };
     }
   },
@@ -204,8 +203,8 @@ export const emptyTrash: ToolDefinition = {
         end tell
       `);
       return { success: true, message: "Trash emptied" };
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to empty trash" };
     }
   },
 };

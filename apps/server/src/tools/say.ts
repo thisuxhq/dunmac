@@ -24,8 +24,8 @@ export const say: ToolDefinition = {
       } else {
         return { success: false, message: `Failed to speak` };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to speak text" };
     }
   },
 };

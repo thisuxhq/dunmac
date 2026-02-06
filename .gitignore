@@ -6,5 +6,15 @@ node_modules
 .env.*
 !.env.example
 
+# Build output
+.svelte-kit/
+build/
+dist/
+.vite/
+
+# OS / Editor
+.DS_Store
+*.log
+
 # Project documentation (private)
 IDEA.md

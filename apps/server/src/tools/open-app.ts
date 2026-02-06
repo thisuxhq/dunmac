@@ -9,17 +9,18 @@ export const openApp: ToolDefinition = {
   }),
   execute: async ({ name }) => {
     try {
-      const script = `tell application "${name}" to activate`;
+      const safeName = name.replace(/["\\]/g, "");
+      const script = `tell application "${safeName}" to activate`;
       const proc = Bun.spawn(["osascript", "-e", script]);
       await proc.exited;
-      
+
       if (proc.exitCode === 0) {
-        return { success: true, message: `Opened ${name}` };
+        return { success: true, message: `Opened ${safeName}` };
       } else {
-        return { success: false, message: `Failed to open ${name}` };
+        return { success: false, message: `Failed to open ${safeName}` };
       }
-    } catch (error) {
-      return { success: false, message: `Error: ${error}` };
+    } catch {
+      return { success: false, message: "Failed to open application" };
     }
   },
 };
